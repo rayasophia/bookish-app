@@ -26,3 +26,47 @@ resource "aws_internet_gateway" "bookish_internet_gateway" {
     Name = "dev-igw"
   }
 }
+
+resource "aws_route_table" "bookish_public_rt" {
+  vpc_id = aws_vpc.bookish_vpc.id
+
+  tags = {
+    Name = "dev-public-rt"
+  }
+}
+
+resource "aws_route" "default_route" {
+  route_table_id         = aws_route_table.bookish_public_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.bookish_internet_gateway.id
+}
+
+resource "aws_route_table_association" "bookish_public_subnet_association" {
+  subnet_id      = aws_subnet.bookish_public_subnet.id
+  route_table_id = aws_route_table.bookish_public_rt.id
+}
+
+resource "aws_security_group" "bookish_sg" {
+  name        = "dev-sg"
+  description = "dev security group"
+  vpc_id      = aws_vpc.bookish_vpc.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["192.168.2.1/32"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_key_pair" "bookish_auth" {
+  key_name = "bookishkey"
+  public_key = file("~/.ssh/bookishkey.pub")
+}
