@@ -67,6 +67,23 @@ resource "aws_security_group" "bookish_sg" {
 }
 
 resource "aws_key_pair" "bookish_auth" {
-  key_name = "bookishkey"
+  key_name   = "bookishkey"
   public_key = file("~/.ssh/bookishkey.pub")
+}
+
+resource "aws_instance" "dev_node" {
+  ami           = data.aws_ami.server_ami.id
+  instance_type = "t2.micro" # free tier
+  key_name      = aws_key_pair.bookish_auth.key_name
+  subnet_id     = aws_subnet.bookish_public_subnet.id
+  vpc_security_group_ids = [aws_security_group.bookish_sg.id]
+  user_data = file("userdata.tpl")
+
+  root_block_device {
+    volume_size = 10
+  }
+
+  tags = {
+    Name = "dev-node"
+  }
 }
