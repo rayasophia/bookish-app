@@ -11,7 +11,7 @@ resource "aws_vpc" "bookish_vpc" {
 resource "aws_subnet" "bookish_public_subnet" {
   vpc_id                  = aws_vpc.bookish_vpc.id
   cidr_block              = "10.10.1.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = "us-east-2a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -55,7 +55,7 @@ resource "aws_security_group" "bookish_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["192.168.2.1/32"]
+    cidr_blocks = ["184.146.156.29/32"]
   }
 
   egress {
