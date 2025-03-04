@@ -7,8 +7,16 @@
 - **Frontend**:  
   - HTML5, CSS3, JavaScript  
   - Bootstrap, Tailwind CSS  
-  - Express Handlebars
+  - Angular
 - **Backend**:  
   - Node.js
   - Express.js  
-  - Database: PostgreSQL (hosted on AWS)
+  - MongoDB
+- **Containerization & Deployment**:  
+  - Docker
+- **Infrastructure**:
+  - AWS
+  - Terraform (IaC)
+- **Version Control & CI/CD**:
+  - GitHub
+  - GitHub Actions
